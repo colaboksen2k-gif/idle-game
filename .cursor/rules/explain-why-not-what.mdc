@@ -1,0 +1,35 @@
+---
+description: Code comments must explain intent, not narrate what the code does
+alwaysApply: true
+---
+
+# Explain Why, Not What
+
+Comments should explain reasoning, trade-offs, or non-obvious intent. Never narrate code that already reads clearly.
+
+## Bad comments (never write these)
+
+```js
+// increment counter
+count++;
+
+// return the result
+return total;
+
+// loop through items
+for (const item of items) {
+```
+
+## Good comments (explain the why)
+
+```js
+// Offline earnings cap at 8 hours to prevent absurd catch-up gains
+const maxOfflineSeconds = 8 * 60 * 60;
+
+// Prestige multiplier applied before other bonuses to match the intended stacking order
+return base * prestigeMultiplier * upgradeBonus;
+```
+
+## Rule
+
+If a comment doesn't add information beyond what the code itself says, delete it.

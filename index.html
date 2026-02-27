@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Click — Cave Idle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button type="button" class="mute-btn" id="muteBtn" aria-label="Toggle sound">🔊</button>
+
+  <div class="game-wrap">
+
+    <!-- ═══ LEFT: Mine ══════════════════════════════════════════════════════ -->
+    <div class="game-left">
+      <h1>🪙 Cave Idle</h1>
+
+      <div class="gold-display">Gold: <span id="gold">0</span></div>
+
+      <div class="materials-row">
+        <span class="material scrap">Scrap: <span id="scrap">0</span></span>
+        <span class="material crystals">Cry: <span id="crystals">0</span></span>
+        <span class="material ancient">Anc: <span id="ancientFragments">0</span></span>
+        <span class="material rune" id="mat-rune-wrap" style="display:none">Rune: <span id="runeShards">0</span></span>
+        <span class="material shadow" id="mat-shadow-wrap" style="display:none">Shadow: <span id="shadowDust">0</span></span>
+        <span class="material dragon" id="mat-dragon-wrap" style="display:none">Dragon: <span id="dragonScales">0</span></span>
+      </div>
+
+      <!-- Mining block — pixel art overlay ready -->
+      <div class="mining-block-wrap">
+        <div class="mining-block stone" id="miningBlock" title="Click to mine">
+          <!-- Pixel art image: place img/blocks/{type}.png to activate -->
+          <img class="block-art" id="blockArt" src="" alt=""
+               onerror="this.style.display='none'" style="display:none">
+          <span class="mining-block-name" id="blockName">Stone</span>
+          <span class="block-hp-text" id="blockHpText">55 / 55</span>
+          <div class="block-hp-bar">
+            <div class="block-hp-fill high" id="blockHpFill" style="width:100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="per-click">
+        ⚔️ <span id="perClick">1</span> dmg &nbsp;·&nbsp;
+        🪨 <span id="blocksBroken">0</span> blocks
+      </p>
+      <p class="goblin-message" id="goblinMessage"></p>
+    </div>
+
+    <!-- ═══ RIGHT: Tabs ═════════════════════════════════════════════════════ -->
+    <div class="game-right">
+
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="upgrades">⚒ Upgrades</button>
+        <button class="tab-btn" data-tab="equipment">⚔️ Equipment</button>
+        <button class="tab-btn" data-tab="progress">📜 Progress</button>
+      </div>
+
+      <!-- ── Upgrades tab ─────────────────────────────────────────────── -->
+      <div class="tab-panel active" id="tab-upgrades">
+        <section class="upgrades">
+          <div class="upgrade">
+            <div class="upgrade-info">
+              <div class="upgrade-name">Stronger Click</div>
+              <div class="upgrade-desc">+1 gold per click</div>
+            </div>
+            <div class="upgrade-right">
+              <button class="upgrade-buy" data-id="clickPower" data-cost="15" data-inc="1">Buy (15)</button>
+              <span class="upgrade-count" id="count-clickPower">x0</span>
+            </div>
+          </div>
+          <div class="upgrade">
+            <div class="upgrade-info">
+              <div class="upgrade-name">Hungry Goblin Digger</div>
+              <div class="upgrade-desc">+1 gold/sec</div>
+            </div>
+            <div class="upgrade-right">
+              <button class="upgrade-buy" data-id="autoClick" data-cost="80" data-inc="1">Buy (80)</button>
+              <span class="upgrade-count" id="count-autoClick">x0</span>
+            </div>
+          </div>
+          <div class="upgrade">
+            <div class="upgrade-info">
+              <div class="upgrade-name">Illegal Goblin Tunnel</div>
+              <div class="upgrade-desc">+5 gold/sec</div>
+            </div>
+            <div class="upgrade-right">
+              <button class="upgrade-buy" data-id="mine" data-cost="280" data-inc="5">Buy (280)</button>
+              <span class="upgrade-count" id="count-mine">x0</span>
+            </div>
+          </div>
+          <div class="upgrade">
+            <div class="upgrade-info">
+              <div class="upgrade-name">Gold Wand</div>
+              <div class="upgrade-desc">Doubles all gold income</div>
+            </div>
+            <div class="upgrade-right">
+              <button class="upgrade-buy" data-id="multiplier" data-cost="650" data-inc="0">Buy (650)</button>
+              <span class="upgrade-count" id="count-multiplier">x0</span>
+            </div>
+          </div>
+          <div class="upgrade upgrade-scrap">
+            <div class="upgrade-info">
+              <div class="upgrade-name">Reinforced Pick</div>
+              <div class="upgrade-desc">+5 base gold/click (scrap)</div>
+            </div>
+            <div class="upgrade-right">
+              <button class="upgrade-buy" data-id="scrapClick" data-cost="12" data-inc="5" data-currency="scrap">Buy (12 scrap)</button>
+              <span class="upgrade-count" id="count-scrapClick">x0</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ── Equipment tab ────────────────────────────────────────────── -->
+      <div class="tab-panel" id="tab-equipment">
+        <section class="equipment-section">
+          <div class="equipment-item" id="eq-miningPick" data-id="miningPick">
+            <div><span class="name">Mining Pick</span>
+            <div class="effect">+4 dmg/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="miningPick">—</button></div>
+          </div>
+          <div class="equipment-item" id="eq-goldRing" data-id="goldRing">
+            <div><span class="name">Gold Ring</span>
+            <div class="effect">+12% gold/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="goldRing">—</button></div>
+          </div>
+          <div class="equipment-item" id="eq-luckyCharm" data-id="luckyCharm">
+            <div><span class="name">Lucky Charm</span>
+            <div class="effect">+4% crit/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="luckyCharm">—</button></div>
+          </div>
+          <div class="equipment-item" id="eq-goblinPact" data-id="goblinPact">
+            <div><span class="name">Goblin Pact</span>
+            <div class="effect">+10% idle/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="goblinPact">—</button></div>
+          </div>
+          <!-- Unlocked at 35 emeralds -->
+          <div class="equipment-item unlock-eq" id="eq-runeGauntlet" data-id="runeGauntlet" style="display:none">
+            <div><span class="name">Rune Gauntlet</span>
+            <div class="effect unlock-tag">🔓 35 emeralds · +20% dmg/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="runeGauntlet">—</button></div>
+          </div>
+          <!-- Unlocked at 50 emeralds -->
+          <div class="equipment-item unlock-eq" id="eq-shadowVeil" data-id="shadowVeil" style="display:none">
+            <div><span class="name">Shadow Veil</span>
+            <div class="effect unlock-tag">🔓 50 emeralds · +15% drops/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="shadowVeil">—</button></div>
+          </div>
+          <!-- Unlocked at 100 emeralds -->
+          <div class="equipment-item unlock-eq" id="eq-dragonAegis" data-id="dragonAegis" style="display:none">
+            <div><span class="name">Dragon Aegis</span>
+            <div class="effect unlock-tag">🔓 100 emeralds · +25% all gold/level · Lv <span class="eq-lvl">0</span>/5</div></div>
+            <div><button type="button" class="buy-btn" data-eq="dragonAegis">—</button></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ── Progress tab ─────────────────────────────────────────────── -->
+      <div class="tab-panel" id="tab-progress">
+
+        <!-- Milestones (collapsible) -->
+        <section class="collapsible-section">
+          <button class="collapse-toggle" data-target="milestonesList">🏆 Milestones ▸</button>
+          <div class="collapsible-body" id="milestonesList" style="display:none"></div>
+        </section>
+
+        <!-- Daily Milestones (collapsible) -->
+        <section class="collapsible-section">
+          <button class="collapse-toggle" data-target="dailyList">📅 Daily Quests ▸</button>
+          <div class="collapsible-body" id="dailyList" style="display:none"></div>
+        </section>
+
+        <!-- Cave Talents -->
+        <section class="talents-section">
+          <div class="talents-header">
+            <span>🌟 Cave Talents</span>
+            <span class="tokens-display">🪙 <span id="prestigeTokens">0</span> tokens</span>
+          </div>
+          <div class="talents-list" id="talentsList"></div>
+        </section>
+
+        <!-- Prestige / Rebirth -->
+        <section class="prestige-section">
+          <div class="prestige-header">💎 Deeper Caves</div>
+          <p class="prestige-info">Reset gold &amp; upgrades for <strong>Ancestral Emeralds</strong>. Each emerald = +10-15% gold forever. Break 50+ blocks or a rare block this run for bonus emeralds.</p>
+          <div class="prestige-stats">
+            <span>Emeralds: <strong id="emeralds">0</strong></span>
+            <span>Bonus: +<strong id="emeraldBonus">0</strong>%</span>
+          </div>
+          <button type="button" class="prestige-btn" id="prestigeBtn">Travel Deeper (need 10,000 gold)</button>
+          <p class="prestige-hint" id="prestigeHint"></p>
+
+          <div class="new-game-row">
+            <button type="button" class="new-game-btn" id="newGameBtn">New Game (reset all)</button>
+          </div>
+        </section>
+
+      </div><!-- /tab-progress -->
+    </div><!-- /game-right -->
+  </div><!-- /game-wrap -->
+
+  <!-- Prestige overlay -->
+  <div class="prestige-overlay" id="prestigeOverlay" style="display:none;">
+    <div class="overlay-box">
+      <h3>Deeper into the Caves!</h3>
+      <div id="prestigeOverlayMessage"></div>
+      <button type="button" class="dismiss-btn" id="prestigeOverlayDismiss">Continue Mining</button>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

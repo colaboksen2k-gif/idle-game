@@ -1,0 +1,33 @@
+---
+description: Every numeric constant must have a named variable with a clear name
+alwaysApply: true
+---
+
+# No Magic Numbers
+
+Bare numeric literals in logic code are forbidden. Every constant must be assigned to a named variable or config key.
+
+## Bad
+
+```js
+setTimeout(tick, 1000);
+if (count > 99) resetCombo();
+reward *= 1.15;
+```
+
+## Good
+
+```js
+const TICK_INTERVAL_MS = 1000;
+const MAX_COMBO_COUNT = 99;
+const PRESTIGE_REWARD_MULTIPLIER = 1.15;
+
+setTimeout(tick, TICK_INTERVAL_MS);
+if (count > MAX_COMBO_COUNT) resetCombo();
+reward *= PRESTIGE_REWARD_MULTIPLIER;
+```
+
+## Exceptions
+
+- `0` and `1` used as index anchors or neutral identity values are fine
+- Loop indices (`i = 0`) are fine

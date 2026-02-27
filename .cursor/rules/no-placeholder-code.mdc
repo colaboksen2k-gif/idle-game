@@ -1,0 +1,20 @@
+---
+description: Never deliver placeholder, stub, or incomplete code
+alwaysApply: true
+---
+
+# No Placeholder Code
+
+Every piece of code delivered must be fully functional. Never use stubs, skeletons, or deferred implementations.
+
+## Forbidden patterns
+
+- `// TODO: implement this`
+- `...` as a function body
+- `pass` / `throw new Error("Not implemented")`
+- Empty catch blocks left as placeholders
+- Functions that return `null` or `undefined` as a stub
+
+## Rule
+
+If a full implementation isn't possible in one step, say so explicitly and implement what IS possible — never silently ship broken code.

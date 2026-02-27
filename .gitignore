@@ -1,0 +1,10 @@
+# OS and editor
+Thumbs.db
+.DS_Store
+*.log
+.vscode/
+
+# Future-proof: tooling and secrets
+node_modules/
+dist/
+.env

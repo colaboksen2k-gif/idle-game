@@ -1,0 +1,30 @@
+---
+description: Break large requests into bite-sized sequential changes to reduce token usage
+alwaysApply: true
+---
+
+# Bite-Size Changes
+
+When the user asks for many changes at once, do NOT implement everything in one go.
+
+## How to handle large requests
+
+1. **Identify** all the distinct changes requested
+2. **List** them back to the user as a numbered plan
+3. **Ask** which to tackle first, OR proceed with only the first/smallest change
+4. **Complete** one change, confirm it works, then move to the next
+5. **Never** bundle more than 2-3 related edits in a single response
+
+## Why
+
+- Reduces token usage per response
+- Easier to review and verify each change
+- Simpler to roll back if something goes wrong
+- Keeps context window focused
+
+## Example
+
+User asks: "Add a new upgrade system, fix the save bug, and redesign the UI"
+
+- Bad: Implement all three at once in one giant response
+- Good: "I see 3 tasks. Let's start with the save bug fix first - it's the smallest. Want me to proceed?"

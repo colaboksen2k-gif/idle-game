@@ -1,0 +1,28 @@
+---
+description: Save/load changes must be flagged, handled carefully, and consider migration
+alwaysApply: true
+---
+
+# Save System Safety
+
+Any change that touches save or load logic is high-risk. Always flag it explicitly and handle it with care.
+
+## Required steps when modifying save/load
+
+1. **Flag it** — State clearly: "This change affects the save system."
+2. **Check for breaking changes** — Will existing saves fail to load after this change?
+3. **Add migration if needed** — If the save format changes, write a migration path for old saves (e.g. default values for new fields).
+4. **Never silently drop data** — If an old field is removed, log or migrate it; never just ignore it.
+
+## Example migration pattern
+
+```js
+function loadSave(data) {
+  // Migration: prestige was added in v2; default to 0 for old saves
+  data.prestigeCount = data.prestigeCount ?? 0;
+}
+```
+
+## Rule
+
+When in doubt, ask before changing save structure. A corrupted save is the worst experience for an idle game player.

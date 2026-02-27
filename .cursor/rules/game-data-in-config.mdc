@@ -1,0 +1,39 @@
+---
+description: All game numbers must live in config/data files, never hardcoded inline
+alwaysApply: true
+---
+
+# Game Data in Config
+
+All balancing numbers — costs, rates, multipliers, durations, caps — must be defined in a dedicated data or config file, not scattered inline throughout logic code.
+
+## Bad
+
+```js
+// Hardcoded inside logic
+if (player.gold >= 150) {
+  player.gold -= 150;
+  player.clickPower += 2;
+}
+```
+
+## Good
+
+```js
+// In config/upgrades.js
+export const UPGRADES = {
+  betterClick: { cost: 150, clickPowerBonus: 2 }
+};
+
+// In logic
+if (player.gold >= UPGRADES.betterClick.cost) {
+  player.gold -= UPGRADES.betterClick.cost;
+  player.clickPower += UPGRADES.betterClick.clickPowerBonus;
+}
+```
+
+## Why
+
+- Balancing changes require touching only one file
+- Numbers are self-documenting by their key name
+- Easier to export/import for save migration
