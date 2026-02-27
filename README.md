@@ -14,13 +14,3 @@ This repo is already initialized with an initial commit. To add a remote and pus
    git push -u origin main
    ```
 
-## Git identity (optional)
-
-If you haven’t set Git identity globally, run once (use your real email and the name you want on commits):
-
-```bash
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-```
-
-Replace `you@example.com` and `Your Name` with your actual email and name. Future commits will then use that identity.
