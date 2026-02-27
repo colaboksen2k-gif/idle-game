@@ -16,17 +16,22 @@ import { formatGold } from './utils.js';
 
 // ─── UI layout constants ──────────────────────────────────────────────────────
 // These control visual presentation only — not game balance
-const HP_HIGH_PCT           = 60;   // % HP above which bar shows as high (green)
-const HP_MID_PCT            = 30;   // % HP above which bar shows as mid (yellow)
-const DMG_POPUP_OFFSET_X    = 30;   // px left of click position
-const DMG_POPUP_OFFSET_Y    = 40;   // px above click position
-const DMG_POPUP_MS          = 900;
-const EVENT_POPUP_MS        = 1400;
-const SCRAP_POPUP_OFFSET_X  = 40;   // px left of click position
-const SCRAP_POPUP_OFFSET_Y  = 12;   // px above click position
-const SCRAP_POPUP_MS        = 1200;
+const HP_HIGH_PCT              = 60;   // % HP above which bar shows as high (green)
+const HP_MID_PCT               = 30;   // % HP above which bar shows as mid (yellow)
+const DMG_POPUP_OFFSET_X       = 30;   // px left of click position
+const DMG_POPUP_OFFSET_Y       = 40;   // px above click position
+const DMG_POPUP_MS             = 900;
+const EVENT_POPUP_MS           = 1400;
+const SCRAP_POPUP_OFFSET_X     = 40;   // px left of click position
+const SCRAP_POPUP_OFFSET_Y     = 12;   // px above click position
+const SCRAP_POPUP_MS           = 1200;
 const GOBLIN_MSG_FADE_OPACITY  = 0.6;
 const GOBLIN_MSG_FADE_DELAY_MS = 4000;
+
+const BLOCK_PARTICLE_COUNT          = 36;
+const BLOCK_PARTICLE_RADIUS_MIN_PX  = 26;
+const BLOCK_PARTICLE_RADIUS_MAX_PX  = 95;
+const BLOCK_PARTICLE_LIFETIME_MS    = 1000;
 
 // ─── Block UI ────────────────────────────────────────────────────────────────
 
@@ -39,7 +44,7 @@ export function updateBlockUI() {
   const hpFill = document.getElementById('blockHpFill');
   const artEl  = document.getElementById('blockArt');
 
-  el.className = 'mining-block ' + b.type;
+  el.className = 'mining-block has-art ' + b.type;
   nameEl.textContent = BLOCK_TYPES[b.type].name;
   hpText.textContent = Math.max(0, b.hp) + ' / ' + b.maxHp;
 
@@ -86,6 +91,38 @@ export function showScrapPopup(clientX, clientY) {
   popup.style.left = clientX - SCRAP_POPUP_OFFSET_X + 'px';
   popup.style.top  = clientY - SCRAP_POPUP_OFFSET_Y + 'px';
   setTimeout(() => popup.remove(), SCRAP_POPUP_MS);
+}
+
+export function showBlockBreakParticles() {
+  const blockEl = document.getElementById('miningBlock');
+  if (!blockEl) return;
+
+  const rect = blockEl.getBoundingClientRect();
+  const cx   = rect.left + rect.width / 2;
+  const cy   = rect.top  + rect.height / 2;
+
+  for (let i = 0; i < BLOCK_PARTICLE_COUNT; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'block-particle';
+
+    const baseAngle = (Math.PI * 2 * i) / BLOCK_PARTICLE_COUNT;
+    const jitter    = (Math.random() - 0.5) * 0.9;
+    const angle     = baseAngle + jitter;
+
+    const radiusRange = BLOCK_PARTICLE_RADIUS_MAX_PX - BLOCK_PARTICLE_RADIUS_MIN_PX;
+    const distance    = BLOCK_PARTICLE_RADIUS_MIN_PX + Math.random() * radiusRange;
+
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
+
+    particle.style.left = cx + 'px';
+    particle.style.top  = cy + 'px';
+    particle.style.setProperty('--particle-tx', offsetX + 'px');
+    particle.style.setProperty('--particle-ty', offsetY + 'px');
+
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), BLOCK_PARTICLE_LIFETIME_MS);
+  }
 }
 
 export function showRandomGoblinMessage() {

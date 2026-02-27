@@ -31,7 +31,8 @@ import {
   showDmgPopup,
   showEventPopup,
   showScrapPopup,
-  showRandomGoblinMessage
+  showRandomGoblinMessage,
+  showBlockBreakParticles
 } from './ui.js';
 import { playMagic, playBlockBreak, playGemBreak, playAncientBreak, playThud, playChaChing } from './audio.js';
 import { checkAllMilestones, checkDailyMilestones, getMilestoneBlockGoldPercent } from './milestones.js';
@@ -273,6 +274,7 @@ export function handleMiningBlockClick(event) {
   tryDropScrap(event.clientX, event.clientY);
   showRandomGoblinMessage();
   if (state.currentBlock.hp <= 0) {
+    showBlockBreakParticles();
     breakBlock();
   } else {
     updateBlockUI();

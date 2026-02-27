@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gold Click — Cave Idle</title>
+  <title>Midnight Caverns — Cave Idle</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
 
     <!-- ═══ LEFT: Mine ══════════════════════════════════════════════════════ -->
     <div class="game-left">
-      <h1>🪙 Cave Idle</h1>
+      <h1 class="game-title">Midnight Caverns</h1>
 
       <div class="gold-display">Gold: <span id="gold">0</span></div>
 
@@ -28,8 +28,8 @@
 
       <!-- Mining block — pixel art overlay ready -->
       <div class="mining-block-wrap">
-        <div class="mining-block stone" id="miningBlock" title="Click to mine">
-          <!-- Pixel art image: place img/blocks/{type}.png to activate -->
+        <div class="mining-block has-art stone" id="miningBlock" title="Click to mine">
+          <!-- Pixel art image is loaded by scripts/ui.js (BLOCK_ART_FILES) -->
           <img class="block-art" id="blockArt" src="" alt=""
                onerror="this.style.display='none'" style="display:none">
           <span class="mining-block-name" id="blockName">Stone</span>

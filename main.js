@@ -6,6 +6,27 @@ import { setupMuteButton } from './scripts/audio.js';
 import { doPrestige } from './scripts/prestige.js';
 import { startGameLoops } from './scripts/gameLoop.js';
 
+// ─── Global copy / paste lock ─────────────────────────────────────────────────
+
+function disableCopyPaste() {
+  const preventEvent = (event) => {
+    event.preventDefault();
+  };
+
+  ['copy', 'cut', 'paste', 'contextmenu'].forEach((type) => {
+    document.addEventListener(type, preventEvent);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!event.ctrlKey && !event.metaKey) return;
+
+    const key = event.key.toLowerCase();
+    if (key === 'c' || key === 'v' || key === 'x' || key === 'a') {
+      event.preventDefault();
+    }
+  });
+}
+
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 
 function initTabs() {
@@ -44,10 +65,16 @@ function initCollapsibles() {
 
 // ─── Game event handlers ─────────────────────────────────────────────────────
 
+const BLOCK_HIT_ANIMATION_MS = 150;
+
 function initEventHandlers() {
   const miningBlock = document.getElementById('miningBlock');
   if (miningBlock) {
-    miningBlock.addEventListener('click', (e) => handleMiningBlockClick(e));
+    miningBlock.addEventListener('click', (e) => {
+      miningBlock.classList.add('mining-block-hit');
+      handleMiningBlockClick(e);
+      setTimeout(() => miningBlock.classList.remove('mining-block-hit'), BLOCK_HIT_ANIMATION_MS);
+    });
   }
 
   document.querySelectorAll('.upgrade-buy').forEach((btn) => {
@@ -110,6 +137,7 @@ function init() {
   initCollapsibles();
   initEventHandlers();
   startGameLoops();
+  disableCopyPaste();
 }
 
 if (document.readyState === 'loading') {

@@ -2,15 +2,15 @@
 
 Browser idle game with prestige, combat, mining, and milestones.
 
-## Pushing to GitHub
+## Live version
 
-This repo is already initialized with an initial commit. To add a remote and push:
+The game can be hosted as a static site (for example with GitHub Pages) by serving this folder so that `index.html` is at the web root.
 
-1. Create an **empty** repo at [github.com/new](https://github.com/new) (e.g. name: `idle-game`). Do not add a README, .gitignore, or license.
-2. In this folder, run (replace `YOUR_USERNAME` with your GitHub username):
+## Patch Notes – Update 0.2
 
-   ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/idle-game.git
-   git push -u origin main
-   ```
+- New: Expanded combat and mining systems to give more to do in the mid and late game.
+- New: Additional audio and ambient sounds to make the caves feel more alive.
+- Improvement: Tweaked upgrade and config values to smooth early-game progression.
+- Improvement: UI and styling adjustments for better readability and layout on different screen sizes.
+- Fix: Various small bugs and inconsistencies in the game loop, combat, and mining scripts.
 
